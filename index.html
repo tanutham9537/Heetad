@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1422">
+  <meta name="description" content="เครื่องมือตรวจสอบอินเทอร์เน็ตและ GPS สำหรับไรเดอร์">
+  <title>Rider Signal Check</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div><div class="eyebrow">RIDER TOOLKIT</div><h1>Signal Check</h1></div>
+  <span id="onlineBadge" class="pill warn">กำลังตรวจสอบ…</span>
+</header>
+<main>
+  <section class="hero panel">
+    <div class="hero-head"><div><div class="muted">สถานะการเชื่อมต่อ</div><div id="connectionType" class="big">กำลังอ่านค่า</div></div><div class="signal-icon">◉</div></div>
+    <div class="metrics">
+      <div><span class="muted">Latency</span><strong id="latency">-- ms</strong></div>
+      <div><span class="muted">Jitter</span><strong id="jitter">-- ms</strong></div>
+      <div><span class="muted">Downlink*</span><strong id="downlink">-- Mbps</strong></div>
+    </div>
+    <p class="hint">*Downlink เป็นค่าประมาณจากเบราว์เซอร์ ไม่ใช่ผล Speed Test</p>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><div><span class="emoji">🌐</span><h2>ทดสอบอินเทอร์เน็ต</h2></div><span id="testState" class="muted small">พร้อมทดสอบ</span></div>
+    <div class="speed-grid">
+      <div class="speed"><span class="muted">Download</span><strong id="download">--</strong><small>Mbps</small></div>
+      <div class="speed"><span class="muted">Upload</span><strong id="upload">--</strong><small>Mbps</small></div>
+    </div>
+    <div class="button-row">
+      <button id="speedBtn" class="primary">เริ่ม Speed Test</button>
+      <button id="pingBtn" class="secondary">ทดสอบ Ping</button>
+    </div>
+    <p class="hint">การทดสอบใช้ข้อมูลอินเทอร์เน็ต โดยเฉพาะ Download/Upload อาจใช้แพ็กเกจมือถือจำนวนมาก</p>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><div><span class="emoji">📍</span><h2>GPS และตำแหน่ง</h2></div><span id="gpsBadge" class="pill warn">ยังไม่เริ่ม</span></div>
+    <div class="gps-grid">
+      <div><span class="muted">ความแม่นยำ</span><strong id="accuracy">-- m</strong></div>
+      <div><span class="muted">ความเร็ว</span><strong id="gpsSpeed">-- km/h</strong></div>
+      <div><span class="muted">ทิศทาง</span><strong id="heading">--</strong></div>
+    </div>
+    <div class="coords"><span id="coords">ยังไม่มีพิกัด</span><button id="copyCoords" class="tiny secondary" disabled>คัดลอก</button></div>
+    <div id="map" aria-label="แผนที่ตำแหน่ง GPS"></div>
+    <div class="button-row">
+      <button id="gpsStart" class="primary">เริ่มติดตาม GPS</button>
+      <button id="gpsStop" class="secondary" disabled>หยุด</button>
+    </div>
+    <p class="hint">ต้องอนุญาต Location และเปิด GPS ของเครื่อง ใช้งานได้เมื่อเปิดเว็บผ่าน HTTPS หรือ localhost</p>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><div><span class="emoji">📱</span><h2>ข้อมูลเครือข่ายและเครื่อง</h2></div></div>
+    <div class="info-list">
+      <div><span>สถานะอินเทอร์เน็ต</span><b id="onlineText">--</b></div>
+      <div><span>ชนิดการเชื่อมต่อ</span><b id="effectiveType">ไม่รองรับ</b></div>
+      <div><span>ค่า RTT จากเบราว์เซอร์</span><b id="browserRtt">--</b></div>
+      <div><span>Data Saver</span><b id="saveData">--</b></div>
+      <div><span>อุปกรณ์ / Browser</span><b id="device">--</b></div>
+    </div>
+    <p class="hint">เว็บเบราว์เซอร์ส่วนใหญ่ไม่เปิดเผยความแรงสัญญาณมือถือจริง (เช่น dBm), Cell ID หรือจำนวนดาวเทียม GPS</p>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><div><span class="emoji">🧾</span><h2>บันทึกผลตรวจ</h2></div><button id="clearHistory" class="tiny secondary">ล้าง</button></div>
+    <div id="history" class="history"><p class="muted">ยังไม่มีผลตรวจ</p></div>
+    <button id="exportBtn" class="secondary full">ส่งออกประวัติ CSV</button>
+  </section>
+  <footer>Rider Signal Check · ข้อมูลตำแหน่งประมวลผลบนอุปกรณ์และไม่ถูกส่งไปยังเซิร์ฟเวอร์ของแอพ</footer>
+</main>
+<div id="toast" role="status" class="toast"></div>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
