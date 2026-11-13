@@ -27,18 +27,19 @@ python -m http.server 8000
 - Ping ในเว็บนี้เป็น HTTP request timing ไม่ใช่ ICMP ping
 - Speed test ใช้ Cloudflare endpoint และอาจถูกเครือข่าย/ส่วนขยายบล็อก ผลขึ้นกับอุปกรณ์ เซิร์ฟเวอร์ และสภาพเครือข่าย
 - Download test ใช้ข้อมูลประมาณ 8 MB และ Upload ประมาณ 4 MB ต่อครั้ง (ไม่นับเวลา handshake/byte แรก)
-- ไฟล์ Leaflet อยู่ใน `vendor/leaflet/` และถูก cache แล้ว แต่ map tiles ยังต้องใช้อินเทอร์เน็ต ขณะออฟไลน์จะไม่เห็นภาพแผนที่ (ยังเห็นพิกัด)
+- ไฟล์ Leaflet ถูก cache แล้ว แต่ map tiles ยังต้องใช้อินเทอร์เน็ต ขณะออฟไลน์จะไม่เห็นภาพแผนที่ (ยังเห็นพิกัด)
 - ประวัติ GPS บันทึกทุก 30 วินาที (ไม่ใช่ทุกครั้งที่ตำแหน่งอัปเดต)
 - พิกัด GPS เป็นข้อมูลละเอียดอ่อน: แอพไม่ส่งพิกัดไป backend แต่แสดงบนอุปกรณ์และอาจถูกเก็บไว้ในหน่วยความจำระหว่างเปิดหน้าเว็บ
 
 ## ไฟล์
+โครงสร้างแบบแบน (ไม่มีโฟลเดอร์ย่อย) เพื่ออัปโหลดผ่านหน้าเว็บ/มือถือได้ง่าย
 - `index.html` หน้าแอพ
 - `style.css` รูปแบบหน้าจอ
 - `app.js` การทดสอบเน็ต/GPS
 - `manifest.webmanifest` ข้อมูล PWA
 - `sw.js` service worker
-- `vendor/leaflet/` ไลบรารีแผนที่ (Leaflet 1.9.4, BSD-2)
-- `icons/` ไอคอนแอพ (รวม maskable สำหรับ Android)
+- `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` ไอคอนแอพ
+- `leaflet.js`, `leaflet.css`, `marker-*.png`, `layers*.png`, `LEAFLET-LICENSE.txt` ไลบรารีแผนที่ Leaflet 1.9.4 (BSD-2)
 
 ## การอัปเดตเวอร์ชัน
 Service worker ใช้ network-first จึงได้ไฟล์ใหม่เสมอเมื่อมีเน็ต หากเพิ่ม/เปลี่ยนรายการไฟล์ใน `CORE` ให้เปลี่ยนค่า `CACHE` ใน `sw.js` ด้วย
