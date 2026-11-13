@@ -4,7 +4,7 @@ const GPS_LOG_INTERVAL_MS=30000;
 const toast = msg => { $('toast').textContent=msg; $('toast').classList.add('show'); setTimeout(()=>$('toast').classList.remove('show'),2600); };
 const fmt = (n,d=1) => Number.isFinite(n) ? n.toFixed(d) : '--';
 function initMap(){
-  if(!window.L){ $('map').innerHTML='<div style="padding:18px;color:#91a5bb">โหลดแผนที่ไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต</div>'; return; }
+  if(!window.L){ $('map').innerHTML='<div style="padding:18px;color:#8a82b5">โหลดแผนที่ไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต</div>'; return; }
   map=L.map('map').setView([13.7563,100.5018],5);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 }
@@ -84,7 +84,7 @@ function startGPS(){
     $('gpsSpeed').textContent=c.speed===null?'-- km/h':fmt(c.speed*3.6,1)+' km/h';
     $('heading').textContent=c.heading===null?'--':fmt(c.heading,0)+'°';
     $('coords').textContent=lat.toFixed(6)+', '+lon.toFixed(6);$('copyCoords').disabled=false;
-    if(map){const ll=[lat,lon];if(!marker){marker=L.marker(ll).addTo(map);accuracyCircle=L.circle(ll,{radius:c.accuracy,color:'#35d39a',fillOpacity:.12}).addTo(map);}else{marker.setLatLng(ll);accuracyCircle.setLatLng(ll).setRadius(c.accuracy);}map.setView(ll,Math.max(map.getZoom(),16));}
+    if(map){const ll=[lat,lon];if(!marker){marker=L.marker(ll).addTo(map);accuracyCircle=L.circle(ll,{radius:c.accuracy,color:'#ff2bd6',fillColor:'#ff2bd6',fillOpacity:.15}).addTo(map);}else{marker.setLatLng(ll);accuracyCircle.setLatLng(ll).setRadius(c.accuracy);}map.setView(ll,Math.max(map.getZoom(),16));}
     const now=Date.now();
     if(now-lastGpsLog>=GPS_LOG_INTERVAL_MS){lastGpsLog=now;addHistory('GPS',`±${Math.round(c.accuracy)} m`,`${lat.toFixed(5)}, ${lon.toFixed(5)}`);} // บันทึกทุก 30 วินาที ไม่ให้ประวัติท่วม
   },err=>{
